@@ -34,6 +34,7 @@ async def process_addme_command(message: types.Message):
 
     await bot.send_message(message.from_user.id, str(db.add_user_data(conn, sql_create_tasks_add_user, user_data)))
 
+
 @dp.message_handler(commands=["all_users"])
 async def all_users(message: types.Message):
     sql_create_tasks_select_user_id = ('''SELECT * FROM users;''')
