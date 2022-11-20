@@ -83,16 +83,6 @@ def set_datetime_and_puk(conn, create_tasks_add_data, user_data, time, puk):
         return False
 
 
-def get_puk(conn, sql_create_tasks_select_user_id, user_id):
-    try:
-        c = conn.cursor()
-        c.execute(sql_create_tasks_select_user_id, [user_id])
-        return c.fetchall()[0][0]
-    except Error as e:
-        print(e)
-        return e
-
-
 def bd_parsing(query):
     for i in query:
         for f in i:
