@@ -36,7 +36,7 @@ async def process_start_command(message: types.Message):
     await bot.send_message(message.from_user.id, "/help")
 
 
-@dp.message_handler(commands=["add_me"])
+@dp.message_handler(commands=["reg"])
 async def process_addme_command(message: types.Message):
     user_data = [
         str(message.from_user.id),
@@ -53,7 +53,7 @@ async def process_addme_command(message: types.Message):
 async def help(message: types.Message):
 
     await bot.send_message(message.from_user.id,    '/start      - началть работать с ботом\n'
-                                                    '/add_me     - зарегистрироваться играть\n'
+                                                    '/reg        - зарегистрироваться играть\n'
                                                     '/puk        - пукнуть\n'
                                                     '/top        - посмотреть таблицу рекордов\n'
                                                     '/statistics - просмотр статуса\n'
