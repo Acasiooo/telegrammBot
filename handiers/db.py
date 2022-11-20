@@ -1,8 +1,9 @@
 import sqlite3
 from sqlite3 import Error
 
+
 def create_connection():
-    conn = None;
+    conn = None
     try:
         conn = sqlite3.connect('botSQL.db')
         print(sqlite3.version)
@@ -16,27 +17,34 @@ def create_table(conn, create_table_sql):
     try:
         c = conn.cursor()
         c.execute(create_table_sql)
-        c.close()
-        print("база была успешно создана")
-        return '''/start   - началть работать с ботом\n
-/add_me  - начать играть\n
-/puk     - пукнуть\n
-/top     - посмотреть таблицу рекордов\n
-/view_me - просмотр мощьности пердежа\n
-/help    - помощь'''
+        return True
     except Error as e:
         print(e)
-        return "Ошибка база данных уже была создана"
+        return False
 
 
-
-def select_user(conn, sql_create_tasks_select_user_id, user_id):
+def add_user_data(conn, create_tasks_add_user, user_data):
     try:
         c = conn.cursor()
-        c.execute(sql_create_tasks_select_user_id, [user_id])
-        data = c.fetchall()
-        c.close()
-        return data
+        c.execute(create_tasks_add_user, user_data)
+        conn.commit()
+        return "user added"
+    except Error as e:
+        print(e)
+        return "Вы уже зарегестрированны в боте"
+
+
+def select_from(conn, sql_create_tasks_select_user_id, user_id = None):
+    try:
+        c = conn.cursor()
+        if user_id !=None:
+            c.execute(sql_create_tasks_select_user_id, [user_id])
+            data = c.fetchall()
+            return data
+        else:
+            c.execute(sql_create_tasks_select_user_id)
+            data = c.fetchall()
+            return data
     except Error as e:
         print(e)
         return e
@@ -47,35 +55,10 @@ def test_user_and_data(conn, sql_create_tasks_select_user_id, user_id):
         c = conn.cursor()
         c.execute(sql_create_tasks_select_user_id, [user_id])
         data = c.fetchall()
-        c.close()
         return data
     except Error as e:
         print(e)
         return False
-
-
-def all_users(conn, sql_create_tasks_select_user_id):
-    try:
-        c = conn.cursor()
-        c.execute(sql_create_tasks_select_user_id)
-        data = c.fetchall()
-        c.close()
-        return data
-    except Error as e:
-        print(e)
-        return e
-
-
-def add_user_data(conn, create_tasks_add_user, user_data):
-    try:
-        c = conn.cursor()
-        c.execute(create_tasks_add_user, user_data)
-        conn.commit()
-        c.close()
-        return "user added"
-    except Error as e:
-        print(e)
-        return "Вы уже зарегестрированны в боте"
 
 
 def set_datetime(conn, create_tasks_add_data, user_data, time):
@@ -83,7 +66,6 @@ def set_datetime(conn, create_tasks_add_data, user_data, time):
         c = conn.cursor()
         c.execute(create_tasks_add_data, [time, user_data])
         conn.commit()
-        c.close()
         return "data commit"
     except Error as e:
         print(e)
@@ -95,7 +77,6 @@ def set_datetime_and_puk(conn, create_tasks_add_data, user_data, time, puk):
         c = conn.cursor()
         c.execute(create_tasks_add_data, [time, puk, user_data])
         conn.commit()
-        c.close()
         return True
     except Error as e:
         print(e)
